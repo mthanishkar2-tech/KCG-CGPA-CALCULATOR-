@@ -39,9 +39,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe();
   }, [pathname, router]);
 
-  return (
+    return (
     <AuthContext.Provider value={{ user, loading }}>
-      {!loading && children}
+      {/* If loading, show a dark cyberpunk loading screen to prevent hydration crashes */}
+      {loading ? (
+        <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+          <div className="text-kcg-blue font-bold tracking-widest animate-pulse">
+            INITIALIZING PULSE...
+          </div>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }
